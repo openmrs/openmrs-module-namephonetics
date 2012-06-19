@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
+
+<sqldiff version="1.0">
+	<help></help>
+	
+	<diff>
+		<version>1.0</version>
+		<author>Partners In Health</author>
+		<date>29 November 2009</date>
+		<description>
+			Initial table creation for name phonetics
+		</description>
+		<sql>
+			CREATE TABLE `name_phonetics` (
+			  `name_phonetics_id` int(11) NOT NULL auto_increment,
+			  `rendered_string` varchar(255) NOT NULL,
+			  `person_name_id` int(11) NOT NULL,
+			  `field` int(11) NOT NULL,
+			  `renderer_class_name` varchar(255) NOT NULL,
+			  PRIMARY KEY  (`name_phonetics_id`),
+			  CONSTRAINT `person_name_for_name_phonetics` FOREIGN KEY (`person_name_id`) REFERENCES `person_name` (`person_name_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			create index `phonetic_name_composite` on `name_phonetics` (`rendered_string`, `field`);
+			create index `phonetic_type` on `name_phonetics`(`field`);
+			create index `phoneitc_code` on `name_phonetics`(`rendered_string`);
+
+		</sql>
+	</diff>
+
+</sqldiff>

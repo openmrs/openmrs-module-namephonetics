@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN" "http://resources.openmrs.org/doctype/config-1.0.dtd">  -->
+<module configVersion="1.0">
+	<id>@MODULE_ID@</id>
+	<name>@MODULE_NAME@</name>
+	<version>@MODULE_VERSION@</version>
+	<package>@MODULE_PACKAGE@</package>
+	<author>PIH</author>
+	<description>
+		Provides a simple data model and API for doing algorithmic-based name searching
+	</description>
+
+	<activator>@MODULE_PACKAGE@.NamePhoneticsModuleActivator</activator>
+	
+	<!-- Require version 1.5 so jquery and jquery-ui are included. This could be relaxed -->
+	<require_version>1.6</require_version>
+	
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+	</extension>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.givenNameStringEncoder</property>
+		<defaultValue></defaultValue>
+		<description>
+			The name of a soundex type algorithm to use for patient searches.  Default values built into this module are:  Soundex, Refined Soundex, Metaphone, Double Metaphone, Caverphone.  You can also add your own algorithms programatically.
+			If left blank, no alorithmic transformation will be stored in the db for searching of this name field.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.middleNameStringEncoder</property>
+		<defaultValue></defaultValue>
+		<description>
+			The name of a soundex type algorithm to use for patient searches.  Default values built into this module are:  Soundex, Refined Soundex, Metaphone, Double Metaphone, Caverphone.  You can also add your own algorithms programatically.
+			If left blank, no alorithmic transformation will be stored in the db for searching of this name field.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.familyNameStringEncoder</property>
+		<defaultValue></defaultValue>
+		<description>
+			The name of a soundex type algorithm to use for patient searches.  Default values built into this module are:  Soundex, Refined Soundex, Metaphone, Double Metaphone, Caverphone.  You can also add your own algorithms programatically.
+			If left blank, no alorithmic transformation will be stored in the db for searching of this name field.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.familyName2StringEncoder</property>
+		<defaultValue></defaultValue>
+		<description>
+			The name of a soundex type algorithm to use for patient searches.  Default values built into this module are:  Soundex, Refined Soundex, Metaphone, Double Metaphone, Caverphone.  You can also add your own algorithms programatically.
+			If left blank, no alorithmic transformation will be stored in the db for searching of this name field.
+		</description>
+	</globalProperty>
+	
+	<!-- Internationalization -->
+	<!-- All message codes should start with @MODULE_ID@.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<!-- /Internationalization -->
+	
+	<mappingFiles>
+		${omodHbmConfig}
+	</mappingFiles>
+	
+</module>
