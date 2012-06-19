@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+ 	
+ 	<!-- for the controller -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    <context:component-scan base-package="org.openmrs.module.namephonetics" />
+
+    <bean id="namephoneticsInterceptor" class="org.openmrs.module.namephonetics.advice.HibernateNamePhoneticsInterceptor" primary="true"/>
+     
+    <bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.namephonetics.NamePhoneticsService</value> <!-- service interface name -->
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager"><ref bean="transactionManager"/></property>
+					<property name="target">
+						<bean name="namePhoneticsServiceImpl" class="org.openmrs.module.namephonetics.impl.NamePhoneticsServiceImpl">
+							<property name="dao">
+								<bean class="org.openmrs.module.namephonetics.db.hibernate.HibernateNamePhoneticsDAO">
+									<property name="sessionFactory"><ref bean="sessionFactory"/></property>	
+								</bean>
+							</property>	
+							<property name="processors">
+								<map>
+									<entry>
+								      <key><value>Soundex</value></key>
+								      <value>org.apache.commons.codec.language.Soundex</value>
+								    </entry>
+								    <entry>
+								      <key><value>Refined Soundex</value></key>
+								      <value>org.apache.commons.codec.language.RefinedSoundex</value>
+								    </entry>
+								    <entry>
+								      <key><value>Metaphone</value></key>
+								      <value>org.apache.commons.codec.language.Metaphone</value>
+								    </entry>
+								    <entry>
+								      <key><value>Double Metaphone</value></key>
+								      <value>org.apache.commons.codec.language.DoubleMetaphone</value>
+								    </entry>
+								    <entry>
+								      <key><value>Chichewa Soundex</value></key>
+								      <value>org.openmrs.module.namephonetics.phoneticsalgorithm.ChichewaSoundex</value>
+								    </entry>
+								    <entry>
+								      <key><value>Kinyarwanda Soundex</value></key>
+								      <value>org.openmrs.module.namephonetics.phoneticsalgorithm.KinyarwandaSoundex</value>
+								    </entry>
+								    <entry>
+								      <key><value>Caverphone</value></key>
+								      <value>org.apache.commons.codec.language.Caverphone</value>
+								    </entry>
+								     <entry>
+								      <key><value>Double Metaphone Alternate</value></key>
+								      <value>org.openmrs.module.namephonetics.phoneticsalgorithm.DoubleMetaphoneAlternate</value>
+								    </entry>
+								</map>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor"/>
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean class="org.openmrs.module.namephonetics.NamePhoneticsContextAware" />
+	 
+	
+    
+</beans>

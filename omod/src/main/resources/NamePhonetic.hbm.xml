@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.namephonetics">
+
+	<class name="NamePhonetic" table="name_phonetics">
+		
+		<id name="id"  column="name_phonetics_id" >
+			<generator class="native"/>
+		</id>
+		<property name="renderedString" column="rendered_string" type="java.lang.String" length="255" not-null="true" />
+		<many-to-one name="personName" class="org.openmrs.PersonName" column="person_name_id" not-null="true" update="false"/>
+		
+		<property
+        name="nameField"
+        column="field"
+        type="org.openmrs.module.namephonetics.NameFieldUserType"
+        not-null="true"/>
+
+
+		<property name="rendererClassName" column="renderer_class_name" type="java.lang.String" length="255" not-null="true" />
+  
+	</class>
+	
+</hibernate-mapping>
