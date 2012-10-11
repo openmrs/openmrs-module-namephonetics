@@ -1,14 +1,17 @@
 package org.openmrs.module.namephonetics;
 
-import javax.servlet.ServletContext;
-
 import org.openmrs.api.context.Context;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.context.ServletContextAware;
 
+import javax.servlet.ServletContext;
+
 public class NamePhoneticsContextAware implements ApplicationContextAware, ServletContextAware {
+
+
+    // TODO: is this still used? I am removing this from moduleApplcationContext for now
 
     protected static ApplicationContext appContext = null;
     protected static ServletContext srvContext = null;

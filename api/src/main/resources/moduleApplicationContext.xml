@@ -10,9 +10,7 @@
            http://www.springframework.org/schema/util
            http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
- 	
- 	<!-- for the controller -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+
     <context:component-scan base-package="org.openmrs.module.namephonetics" />
 
     <bean id="namephoneticsInterceptor" class="org.openmrs.module.namephonetics.advice.HibernateNamePhoneticsInterceptor" primary="true"/>
@@ -80,7 +78,10 @@
 			</list>
 		</property>
 	</bean>
-	<bean class="org.openmrs.module.namephonetics.NamePhoneticsContextAware" />
+
+
+
+	<!-- <bean class="org.openmrs.module.namephonetics.NamePhoneticsContextAware" />  -->
 	 
 	
     

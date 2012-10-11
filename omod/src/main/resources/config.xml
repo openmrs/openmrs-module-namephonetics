@@ -17,7 +17,7 @@
 	
 	<extension>
 		<point>org.openmrs.admin.list</point>
-		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+		<class>@MODULE_PACKAGE@.web.extension.html.AdminList</class>
 	</extension>
 	
 	<globalProperty>
@@ -49,7 +49,7 @@
 		<defaultValue></defaultValue>
 		<description>
 			The name of a soundex type algorithm to use for patient searches.  Default values built into this module are:  Soundex, Refined Soundex, Metaphone, Double Metaphone, Caverphone.  You can also add your own algorithms programatically.
-			If left blank, no alorithmic transformation will be stored in the db for searching of this name field.
+			If left blank, no algorithmic transformation will be stored in the db for searching of this name field.
 		</description>
 	</globalProperty>
 	
@@ -62,7 +62,7 @@
 	<!-- /Internationalization -->
 	
 	<mappingFiles>
-		${omodHbmConfig}
+		NamePhonetics.hbm.xml
 	</mappingFiles>
 	
 </module>
