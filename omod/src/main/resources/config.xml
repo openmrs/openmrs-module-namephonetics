@@ -62,7 +62,7 @@
 	<!-- /Internationalization -->
 	
 	<mappingFiles>
-		NamePhonetics.hbm.xml
+		NamePhonetic.hbm.xml
 	</mappingFiles>
 	
 </module>
