@@ -11,9 +11,9 @@
 	<url>http://openmrs.org</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.openmrs.org/openmrs-modules/namephonetics/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/namephonetics/trunk/</developerConnection>
-		<url>http://svn.openmrs.org/openmrs-modules/namephonetics/trunk/</url>
+		<connection>scm:git:https://github.com/openmrs/openmrs-module-namephonetics/</connection>
+		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-namephonetics/</developerConnection>
+		<url>https://github.com/openmrs/openmrs-module-namephonetics/</url>
 	</scm>
 
 	<modules>
