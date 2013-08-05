@@ -1,5 +1,6 @@
 package org.openmrs.module.namephonetics.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -247,5 +248,30 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     public void deleteNamePhonetics(PersonName pn) throws APIException{
     	dao.deleteNamePhonetics(pn);
     }
-    
+
+    /**
+     * @see NamePhoneticsService#findSimilarGivenNames(String)
+     */
+	public List<String> findSimilarGivenNames(String searchPhrase) {
+        Set<PersonName> matches = getAllMatchingNamePhonetics(searchPhrase, null, null, null);
+        List<String> names = new ArrayList<String>();
+        for (PersonName personName : matches) {
+        	names.add(personName.getGivenName());
+        }
+        
+		return names;
+	}
+
+	 /**
+     * @see NamePhoneticsService#findSimilarFamilyNames(String)
+     */
+	public List<String> findSimilarFamilyNames(String searchPhrase) {
+		Set<PersonName> matches = getAllMatchingNamePhonetics(null, null, searchPhrase, null);
+        List<String> names = new ArrayList<String>();
+        for (PersonName personName : matches) {
+        	names.add(personName.getFamilyName());
+        }
+        
+		return names;
+	}
 }
