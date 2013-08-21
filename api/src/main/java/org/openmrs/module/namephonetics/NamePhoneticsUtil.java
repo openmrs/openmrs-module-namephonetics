@@ -1,5 +1,6 @@
 package org.openmrs.module.namephonetics;
 
+import java.text.Normalizer;
 import java.util.List;
 
 import org.apache.commons.codec.EncoderException;
@@ -50,7 +51,7 @@ public class NamePhoneticsUtil {
         
         public static String encodeString(String stringToEncode, StringEncoder processor){
             try {
-                return processor.encode(stringToEncode);
+                return processor.encode(Normalizer.normalize(stringToEncode, Normalizer.Form.NFD));
             } catch (EncoderException ex){
                 ex.printStackTrace(System.out);
                 throw new RuntimeException("The encoder " + processor.getClass().getName() + " couldn't encode the string " + stringToEncode + ".  Check the system log for details." );

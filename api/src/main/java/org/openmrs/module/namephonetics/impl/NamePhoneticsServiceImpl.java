@@ -1,12 +1,6 @@
 package org.openmrs.module.namephonetics.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -254,12 +248,12 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
      */
 	public List<String> findSimilarGivenNames(String searchPhrase) {
         Set<PersonName> matches = getAllMatchingNamePhonetics(searchPhrase, null, null, null);
-        List<String> names = new ArrayList<String>();
+        Set<String> names = new TreeSet<String>();
         for (PersonName personName : matches) {
         	names.add(personName.getGivenName());
         }
         
-		return names;
+		return new ArrayList<String>(names);
 	}
 
 	 /**
@@ -267,11 +261,11 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
      */
 	public List<String> findSimilarFamilyNames(String searchPhrase) {
 		Set<PersonName> matches = getAllMatchingNamePhonetics(null, null, searchPhrase, null);
-        List<String> names = new ArrayList<String>();
+        Set<String> names = new TreeSet<String>();
         for (PersonName personName : matches) {
         	names.add(personName.getFamilyName());
         }
         
-		return names;
+		return new ArrayList<String>(names);
 	}
 }
