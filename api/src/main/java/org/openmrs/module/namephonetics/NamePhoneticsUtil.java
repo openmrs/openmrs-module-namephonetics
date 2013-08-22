@@ -47,19 +47,25 @@ public class NamePhoneticsUtil {
             Context.getService(NamePhoneticsService.class).savePhoneticsForPersonName(pn,  gpGivenName, gpMiddleName,gpFamilyName, gpFamilyName2);
         }
         
-        
-        
         public static String encodeString(String stringToEncode, StringEncoder processor){
-            try {
-                return processor.encode(Normalizer.normalize(stringToEncode, Normalizer.Form.NFD));
-            } catch (EncoderException ex){
+			try {
+				try {
+					return processor.encode(stringToEncode);
+				} catch (IllegalArgumentException iex){
+					log.debug("An unmapped character was encountered while encoding " + stringToEncode + ".  Trying to normalize...");
+					try {
+						return processor.encode(Normalizer.normalize(stringToEncode, Normalizer.Form.NFD));
+					} catch (IllegalArgumentException e) {
+						log.debug("Failed to encode " + stringToEncode);
+						e.printStackTrace(System.out);
+						throw new RuntimeException(e.getMessage() + ".   You need to modify your algorithm for your person names.");
+					}
+				}
+			} catch (EncoderException ex){
                 ex.printStackTrace(System.out);
                 throw new RuntimeException("The encoder " + processor.getClass().getName() + " couldn't encode the string " + stringToEncode + ".  Check the system log for details." );
-            } catch (IllegalArgumentException iex){
-                log.error("An unmapped character was encountered while encoding " + stringToEncode + ".  Returning null.");
-                iex.printStackTrace(System.out);
-                throw new RuntimeException(iex.getMessage() + ".   You need to modify your algorithm for your person names.");
-            }
+			}
+
         }
         
 
