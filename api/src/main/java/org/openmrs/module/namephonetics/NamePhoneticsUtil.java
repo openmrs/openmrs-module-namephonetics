@@ -52,11 +52,11 @@ public class NamePhoneticsUtil {
 				try {
 					return processor.encode(stringToEncode);
 				} catch (IllegalArgumentException iex){
-					log.debug("An unmapped character was encountered while encoding " + stringToEncode + ".  Trying to normalize...");
+					log.info("An unmapped character was encountered while encoding " + stringToEncode + ".  Trying to normalize...");
 					try {
 						return processor.encode(Normalizer.normalize(stringToEncode, Normalizer.Form.NFD));
 					} catch (IllegalArgumentException e) {
-						log.debug("Failed to encode " + stringToEncode);
+						log.error("Failed to encode " + stringToEncode);
 						e.printStackTrace(System.out);
 						throw new RuntimeException(e.getMessage() + ".   You need to modify your algorithm for your person names.");
 					}
