@@ -127,8 +127,7 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.3.2</version>
                     <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <tagNameFormat>@{project.version}</tagNameFormat>
+                        <pushChanges>false</pushChanges>
                     </configuration>
                 </plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
