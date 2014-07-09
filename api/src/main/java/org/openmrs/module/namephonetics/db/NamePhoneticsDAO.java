@@ -19,4 +19,6 @@ public interface NamePhoneticsDAO {
     public List<NamePhonetic> getNamePhoneticsByPersonName(PersonName pn) throws DAOException;
     
     public void deleteNamePhonetics(PersonName pn) throws DAOException;
+
+	public List<PersonName> getAllPersonNames();
 }

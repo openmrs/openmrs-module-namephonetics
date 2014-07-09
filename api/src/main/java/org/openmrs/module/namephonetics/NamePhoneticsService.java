@@ -47,7 +47,13 @@ public interface NamePhoneticsService extends OpenmrsService{
      */   
     @Transactional(readOnly=true)
     public List<Patient> findPatient(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search) throws APIException;
-    
+
+	/**
+	 * Rebuilds all name phonetics in the database
+	 */
+	@Transactional
+	public void savePhoneticsForAllPatients();
+
     /**
 	 * Searches for given names that are similar to a search phrase.
      *

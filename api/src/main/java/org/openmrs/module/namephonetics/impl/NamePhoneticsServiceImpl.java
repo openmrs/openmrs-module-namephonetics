@@ -210,7 +210,29 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
           return  ps.getPatients(idList);
     }
 
-   
+	public void savePhoneticsForAllPatients() {
+
+		AdministrationService as = Context.getAdministrationService();
+		String gpGivenName = as.getGlobalProperty(NamePhoneticsConstants.GIVEN_NAME_GLOBAL_PROPERTY);
+		String gpMiddleName = as.getGlobalProperty(NamePhoneticsConstants.MIDDLE_NAME_GLOBAL_PROPERTY);
+		String gpFamilyName = as.getGlobalProperty(NamePhoneticsConstants.FAMILY_NAME_GLOBAL_PROPERTY);
+		String gpFamilyName2 = as.getGlobalProperty(NamePhoneticsConstants.FAMILY_NAME2_GLOBAL_PROPERTY);
+
+		List<PersonName> personNames = dao.getAllPersonNames();
+		log.info("Rebuilding all " + personNames.size() + " person names");
+
+		for (int i=0; i<personNames.size(); i++) {
+			PersonName pn = personNames.get(i);
+			savePhoneticsForPersonName(pn,  gpGivenName, gpMiddleName,gpFamilyName, gpFamilyName2);
+			if ((i+1) % 100 == 0) {
+				Context.flushSession();
+				Context.clearSession();
+				log.info("Num Completed:" + (i+1));
+			}
+		}
+
+		log.info("Rebuilding person names completed");
+	}
     
     public void savePhoneticsForPatient(Patient p, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2){
        savePhoneticsForPerson(p, gpGivenName, gpMiddleName, gpFamilyName, gpFamilyName2);

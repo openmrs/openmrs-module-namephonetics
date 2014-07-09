@@ -50,8 +50,10 @@ public class HibernateNamePhoneticsDAO implements NamePhoneticsDAO {
 	    	sessionFactory.getCurrentSession().setFlushMode(FlushMode.AUTO);
     	}
     }
-    
 
+	public List<PersonName> getAllPersonNames() {
+		return sessionFactory.getCurrentSession().createQuery("from PersonName").list();
+	}
     
     public List<NamePhonetic> getNamePhoneticsByRenderedString(String search, NamePhonetic.NameField field, String rendererClassName) throws DAOException {
         Query q = sessionFactory.getCurrentSession().createQuery("from NamePhonetic np where np.renderedString = :search and nameField = :field and rendererClassName = :className");
@@ -75,6 +77,6 @@ public class HibernateNamePhoneticsDAO implements NamePhoneticsDAO {
         else
             return new ArrayList<NamePhonetic>();
     }
-    
+
     //TODO:  put together the master query at the DB level, instead of having to merge results of getNamePhoneticsByRenderedString
 }

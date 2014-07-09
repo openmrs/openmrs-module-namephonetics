@@ -1,8 +1,5 @@
 package org.openmrs.module.namephonetics;
 
-import java.text.Normalizer;
-import java.util.List;
-
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.StringEncoder;
 import org.apache.commons.logging.Log;
@@ -13,17 +10,14 @@ import org.openmrs.PersonName;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 
+import java.text.Normalizer;
+
 public class NamePhoneticsUtil {
 
         private final static Log log = LogFactory.getLog(NamePhoneticsUtil.class);
     
         public static void savePhoneticsForAllPatients(){
-            List<Patient> pList = Context.getPatientService().getAllPatients(false);
-            for (Patient p: pList){
-                log.info("beginning phonetics rebuild for patient " + p);
-                savePhoneticsForPerson(p);
-            }
-            
+			Context.getService(NamePhoneticsService.class).savePhoneticsForAllPatients();
         }
         
         
