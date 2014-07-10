@@ -1,7 +1,5 @@
 package org.openmrs.module.namephonetics.impl;
 
-import java.util.*;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +16,16 @@ import org.openmrs.module.namephonetics.NamePhoneticsConstants;
 import org.openmrs.module.namephonetics.NamePhoneticsService;
 import org.openmrs.module.namephonetics.NamePhoneticsUtil;
 import org.openmrs.module.namephonetics.db.NamePhoneticsDAO;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements NamePhoneticsService {
 
@@ -49,7 +57,7 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     }
     
     /**
-     * @see IdentifierSourceService#getProcessor(IdentifierSource)
+     * @see NamePhoneticsService#getProcessorClassName(String)
      */
     public String getProcessorClassName(String name) {
         return getProcessors().get(name);
@@ -70,7 +78,7 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     }
     
     /**
-     * @see IdentifierSourceService#registerProcessor(Class, IdentifierSourceProcessor)
+     * @see NamePhoneticsService#registerProcessor(String, String)
      */
     public void registerProcessor(String processorCodeName, String processorClassName) throws APIException {
         getProcessors().put(processorCodeName, processorClassName);
@@ -89,7 +97,7 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
 
     /**
      * ADDS, doesn't simply set
-     * @param processors the processors to set
+     * @param processorsToAdd the processors to set
      */
     public void setProcessors(Map<String, String> processorsToAdd) {
         if (processorsToAdd != null) {
@@ -98,6 +106,49 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
             }
         }
     }
+
+	/**
+	 * @see NamePhoneticsService#getMatchingPersonNames(String)
+	 */
+	public Set<PersonName> getMatchingPersonNames(String searchString) {
+
+		Set<PersonName> matchingNames = new HashSet<PersonName>();
+
+		AdministrationService as = Context.getAdministrationService();
+		Map<NamePhonetic.NameField, String> fieldsToCheck = new LinkedHashMap<NamePhonetic.NameField, String>();
+		fieldsToCheck.put(NamePhonetic.NameField.GIVEN_NAME, as.getGlobalProperty(NamePhoneticsConstants.GIVEN_NAME_GLOBAL_PROPERTY));
+		fieldsToCheck.put(NamePhonetic.NameField.MIDDLE_NAME, as.getGlobalProperty(NamePhoneticsConstants.MIDDLE_NAME_GLOBAL_PROPERTY));
+		fieldsToCheck.put(NamePhonetic.NameField.FAMILY_NAME, as.getGlobalProperty(NamePhoneticsConstants.FAMILY_NAME_GLOBAL_PROPERTY));
+		fieldsToCheck.put(NamePhonetic.NameField.FAMILY_NAME2, as.getGlobalProperty(NamePhoneticsConstants.FAMILY_NAME2_GLOBAL_PROPERTY));
+
+		String[] unEncodedValuesToCheck = searchString.trim().replace(",", " ").replace("  ", " ").split(" ");
+
+		// Iterate across each search component passed in.
+		for (int i=0; i<unEncodedValuesToCheck.length; i++) {
+			Set<PersonName> nameMatches = new HashSet<PersonName>();
+			String nonEncodedValueToCheck = unEncodedValuesToCheck[i];
+
+			// Check for a match in any of the name fields.  If a match is found, add the name as a match for this search component
+			for (NamePhonetic.NameField nameField : fieldsToCheck.keySet()) {
+				String algorithmForField = fieldsToCheck.get(nameField);
+				if (StringUtils.isNotBlank(algorithmForField)) {
+					List<NamePhonetic> namePhonetics = getNamePhoneticsByUnrenderedSearch(nonEncodedValueToCheck, nameField, algorithmForField);
+					for (NamePhonetic np : namePhonetics) {
+						nameMatches.add(np.getPersonName());
+					}
+				}
+			}
+			// Ensure that if multiple search components are passed in that matched names match all search components
+			if (i == 0) {
+				matchingNames.addAll(nameMatches);
+			}
+			else {
+				matchingNames.retainAll(nameMatches);
+			}
+		}
+
+		return matchingNames;
+	}
 
 	/**
 	 * @return all of the matching person names for the passed in searches

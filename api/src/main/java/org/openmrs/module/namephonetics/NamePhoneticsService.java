@@ -27,12 +27,20 @@ public interface NamePhoneticsService extends OpenmrsService{
     
     @Transactional(readOnly=true)
     public Map<String, String> getProcessors();
-    
-    @Transactional(readOnly=true)
+
+	@Transactional(readOnly=true)
     public void registerProcessor(String processorCodeName, String processorClassName) throws APIException;
     
     @Transactional(readOnly=true)
     public List<NamePhonetic> getNamePhoneticsByPersonName(PersonName pn) throws APIException;
+
+	/**
+	 * @return all person names that phonetically match the given search string.
+	 * This will split the search string into words and search each component individually across all name fields.
+	 * Matches will be returned for all person names that match at least one name field for all search words
+	 */
+	@Transactional(readOnly=true)
+	public Set<PersonName> getMatchingPersonNames(String searchString);
 
 	/**
 	 * @return all of the matching person names for the passed in searches
