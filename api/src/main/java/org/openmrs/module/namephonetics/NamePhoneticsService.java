@@ -2,6 +2,7 @@ package org.openmrs.module.namephonetics;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.openmrs.Patient;
 import org.openmrs.Person;
@@ -32,6 +33,12 @@ public interface NamePhoneticsService extends OpenmrsService{
     
     @Transactional(readOnly=true)
     public List<NamePhonetic> getNamePhoneticsByPersonName(PersonName pn) throws APIException;
+
+	/**
+	 * @return all of the matching person names for the passed in searches
+	 */
+	@Transactional(readOnly=true)
+	public Set<PersonName> getAllMatchingNamePhonetics(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search);
     
     /**
      * 

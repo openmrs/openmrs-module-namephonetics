@@ -98,9 +98,11 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
             }
         }
     }
-    
-    
-    private Set<PersonName> getAllMatchingNamePhonetics(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search){
+
+	/**
+	 * @return all of the matching person names for the passed in searches
+	 */
+    public Set<PersonName> getAllMatchingNamePhonetics(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search) {
         Set<NamePhonetic> ret = new LinkedHashSet<NamePhonetic>();
         AdministrationService as = Context.getAdministrationService();
         String gpGivenName = as.getGlobalProperty(NamePhoneticsConstants.GIVEN_NAME_GLOBAL_PROPERTY);
