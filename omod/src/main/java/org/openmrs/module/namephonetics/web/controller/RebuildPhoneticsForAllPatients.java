@@ -56,7 +56,7 @@ public class RebuildPhoneticsForAllPatients {
         Context.setVolatileUserData(WebConstants.OPENMRS_MSG_ATTR, "All settings for given, middle, family, family2 saved.");
         
         if (submit.equals("Generate Phonetics for All Patients")){
-            NamePhoneticsUtil.savePhoneticsForAllPatients();
+			Context.getService(NamePhoneticsService.class).savePhoneticsForAllPatients();
             request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, "All Phonetics Rebuilt Successfully.");
         }
         

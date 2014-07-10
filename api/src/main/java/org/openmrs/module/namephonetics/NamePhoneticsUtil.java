@@ -15,12 +15,13 @@ import java.text.Normalizer;
 public class NamePhoneticsUtil {
 
         private final static Log log = LogFactory.getLog(NamePhoneticsUtil.class);
-    
+
+		@Deprecated
         public static void savePhoneticsForAllPatients(){
 			Context.getService(NamePhoneticsService.class).savePhoneticsForAllPatients();
         }
-        
-        
+
+	    @Deprecated
         public static void savePhoneticsForPatient(Patient p){
         	savePhoneticsForPerson(p);
         }

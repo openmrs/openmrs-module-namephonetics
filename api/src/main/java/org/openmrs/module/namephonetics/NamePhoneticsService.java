@@ -86,9 +86,9 @@ public interface NamePhoneticsService extends OpenmrsService{
 	 */
     @Transactional(readOnly = true)
 	public List<String> findSimilarFamilyNames(String searchPhrase);
-    
+
     /**
-     *  @see NamePhoneticsUtil#savePhoneticsForPatient(Patient p)
+     *  @see NamePhoneticsUtil#savePhoneticsForPerson(Person p)
      */
     @Transactional
     public void savePhoneticsForPerson(Person p, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2) throws APIException;
