@@ -3,7 +3,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>namephonetics</artifactId>
-	<version>1.5-SNAPSHOT</version>
+	<version>1.5</version>
 	<packaging>pom</packaging>
 	<name>Name Phonetics</name>
 	<description>Parent project for Name Phonetics</description>
@@ -14,7 +14,7 @@
 		<connection>scm:git:https://github.com/openmrs/openmrs-module-namephonetics/</connection>
 		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-namephonetics/</developerConnection>
 		<url>https://github.com/openmrs/openmrs-module-namephonetics/</url>
-	  <tag>HEAD</tag>
+	  <tag>1.5</tag>
     </scm>
 
 	<modules>
