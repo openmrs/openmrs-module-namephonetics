@@ -10,11 +10,11 @@ import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.namephonetics.NamePhonetic;
 import org.openmrs.module.namephonetics.NamePhoneticsService;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.test.annotation.Rollback;
 
 
-public class NamePhoneticsServiceTest extends BaseModuleContextSensitiveTest {
+public class NamePhoneticsServiceTest extends BaseModuleWebContextSensitiveTest {
 	
     @Override
     public Boolean useInMemoryDatabase(){

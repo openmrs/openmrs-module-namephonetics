@@ -1,22 +1,5 @@
 package org.openmrs.module.namephonetics.impl;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.openmrs.Patient;
-import org.openmrs.Person;
-import org.openmrs.PersonName;
-import org.openmrs.api.APIException;
-import org.openmrs.api.AdministrationService;
-import org.openmrs.api.PatientSetService;
-import org.openmrs.api.context.Context;
-import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.namephonetics.NamePhonetic;
-import org.openmrs.module.namephonetics.NamePhoneticsConstants;
-import org.openmrs.module.namephonetics.NamePhoneticsService;
-import org.openmrs.module.namephonetics.NamePhoneticsUtil;
-import org.openmrs.module.namephonetics.db.NamePhoneticsDAO;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +10,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.PersonName;
+import org.openmrs.api.APIException;
+import org.openmrs.api.AdministrationService;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
+import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.namephonetics.NamePhonetic;
+import org.openmrs.module.namephonetics.NamePhoneticsConstants;
+import org.openmrs.module.namephonetics.NamePhoneticsService;
+import org.openmrs.module.namephonetics.NamePhoneticsUtil;
+import org.openmrs.module.namephonetics.db.NamePhoneticsDAO;
+
 public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements NamePhoneticsService {
 
     protected static final Log log = LogFactory.getLog(NamePhoneticsServiceImpl.class);
@@ -35,20 +35,24 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     //rendererCode, rendererClassName
     private static Map<String, String> processors = null;
     
-    public void saveNamePhonetic(NamePhonetic np) throws APIException {
+    @Override
+	public void saveNamePhonetic(NamePhonetic np) throws APIException {
         dao.saveNamePhonetic(np);
     }
     
     
-    public NamePhonetic getNamePhonetic(Integer id) throws APIException {
+    @Override
+	public NamePhonetic getNamePhonetic(Integer id) throws APIException {
         return dao.getNamePhonetic(id);
     }
     
-    public void deleteNamePhonetic(NamePhonetic np) throws APIException {
+    @Override
+	public void deleteNamePhonetic(NamePhonetic np) throws APIException {
         dao.deleteNamePhonetic(np);
     }
     
-    public List<NamePhonetic> getNamePhoneticsByPersonName(PersonName pn) throws APIException{
+    @Override
+	public List<NamePhonetic> getNamePhoneticsByPersonName(PersonName pn) throws APIException{
         return dao.getNamePhoneticsByPersonName(pn);
     }
 
@@ -59,7 +63,8 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     /**
      * @see NamePhoneticsService#getProcessorClassName(String)
      */
-    public String getProcessorClassName(String name) {
+    @Override
+	public String getProcessorClassName(String name) {
         return getProcessors().get(name);
     }
     
@@ -80,7 +85,8 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     /**
      * @see NamePhoneticsService#registerProcessor(String, String)
      */
-    public void registerProcessor(String processorCodeName, String processorClassName) throws APIException {
+    @Override
+	public void registerProcessor(String processorCodeName, String processorClassName) throws APIException {
         getProcessors().put(processorCodeName, processorClassName);
         log.info("NamePhonetics registering processor " + processorCodeName + " : " + processorClassName);
     }
@@ -88,7 +94,8 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     /**
      * @return the processors
      */
-    public Map<String, String> getProcessors() {
+    @Override
+	public Map<String, String> getProcessors() {
         if (processors == null) {
             processors = new HashMap<String, String>();
         }
@@ -110,6 +117,7 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
 	/**
 	 * @see NamePhoneticsService#getMatchingPersonNames(String)
 	 */
+	@Override
 	public Set<PersonName> getMatchingPersonNames(String searchString) {
 
 		Set<PersonName> matchingNames = new HashSet<PersonName>();
@@ -153,7 +161,8 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
 	/**
 	 * @return all of the matching person names for the passed in searches
 	 */
-    public Set<PersonName> getAllMatchingNamePhonetics(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search) {
+    @Override
+	public Set<PersonName> getAllMatchingNamePhonetics(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search) {
         Set<NamePhonetic> ret = new LinkedHashSet<NamePhonetic>();
         AdministrationService as = Context.getAdministrationService();
         String gpGivenName = as.getGlobalProperty(NamePhoneticsConstants.GIVEN_NAME_GLOBAL_PROPERTY);
@@ -252,17 +261,23 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
         return false;
     }
     
-    public List<Patient> findPatient(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search){
+    @Override
+	public List<Patient> findPatient(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search){
         Set<Integer> idList = new HashSet<Integer>();
         Set<PersonName> matches = getAllMatchingNamePhonetics(givenNameSearch, middleNameSearch, familyNameSearch, familyName2Search);
-        PatientSetService ps = Context.getPatientSetService();
         for (PersonName pn:matches){
             idList.add(pn.getPerson().getPersonId());
         }
         //TODO: figure out how you want to order them?
-          return  ps.getPatients(idList);
+		PatientService patientService = Context.getPatientService();
+		List<Patient> patients = new ArrayList<Patient>();
+		for (Integer patientId : idList) {
+			patients.add(patientService.getPatient(patientId));
+		}
+		return patients;
     }
 
+	@Override
 	public void savePhoneticsForAllPatients() {
 
 		AdministrationService as = Context.getAdministrationService();
@@ -291,13 +306,15 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
        savePhoneticsForPerson(p, gpGivenName, gpMiddleName, gpFamilyName, gpFamilyName2);
     }
     
-    public void savePhoneticsForPerson(Person p, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2){
+    @Override
+	public void savePhoneticsForPerson(Person p, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2){
           for (PersonName pn : p.getNames()){
         	  savePhoneticsForPersonName(pn, gpGivenName, gpMiddleName, gpFamilyName, gpFamilyName2);
           }
       }
     
-    public void savePhoneticsForPersonName(PersonName pn, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2){
+    @Override
+	public void savePhoneticsForPersonName(PersonName pn, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2){
     	deleteNamePhonetics(pn);
         if (StringUtils.isNotBlank(gpGivenName) && StringUtils.isNotBlank(pn.getGivenName())) {
             saveNamePhonetic(new NamePhonetic(NamePhoneticsUtil.encodeString(pn.getGivenName(), gpGivenName), pn, NamePhonetic.NameField.GIVEN_NAME, getProcessorClassName(gpGivenName)));
@@ -314,13 +331,15 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
         
     }
   
-    public void deleteNamePhonetics(PersonName pn) throws APIException{
+    @Override
+	public void deleteNamePhonetics(PersonName pn) throws APIException{
     	dao.deleteNamePhonetics(pn);
     }
 
     /**
      * @see NamePhoneticsService#findSimilarGivenNames(String)
      */
+	@Override
 	public List<String> findSimilarGivenNames(String searchPhrase) {
         Set<PersonName> matches = getAllMatchingNamePhonetics(searchPhrase, null, null, null);
         Set<String> names = new TreeSet<String>();
@@ -334,6 +353,7 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
 	 /**
      * @see NamePhoneticsService#findSimilarFamilyNames(String)
      */
+	@Override
 	public List<String> findSimilarFamilyNames(String searchPhrase) {
 		Set<PersonName> matches = getAllMatchingNamePhonetics(null, null, searchPhrase, null);
         Set<String> names = new TreeSet<String>();

@@ -15,10 +15,25 @@
 	<!-- Require version 1.5 so jquery and jquery-ui are included. This could be relaxed -->
 	<require_version>1.6</require_version>
 	
+	<aware_of_modules>
+	    <aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+	</aware_of_modules>
+	
 	<extension>
 		<point>org.openmrs.admin.list</point>
 		<class>@MODULE_PACKAGE@.web.extension.html.AdminList</class>
 	</extension>
+	
+	<conditionalResources>
+		<conditionalResource>
+			<path>/lib/namephonetics-api-1.*</path>
+			<openmrsVersion>1.*</openmrsVersion>
+		</conditionalResource>
+		<conditionalResource>
+			<path>/lib/namephonetics-api-2.*</path>
+			<openmrsVersion>2.*</openmrsVersion>
+		</conditionalResource>
+	</conditionalResources>
 	
 	<globalProperty>
 		<property>@MODULE_ID@.givenNameStringEncoder</property>
