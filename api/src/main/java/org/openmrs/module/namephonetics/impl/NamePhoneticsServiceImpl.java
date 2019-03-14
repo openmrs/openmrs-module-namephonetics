@@ -19,6 +19,7 @@ import org.openmrs.PersonName;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.namephonetics.NamePhonetic;
@@ -276,6 +277,23 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
 		}
 		return patients;
     }
+    
+    @Override
+   	public List<Person> findPerson(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search){
+           Set<Integer> idList = new HashSet<Integer>();
+           Set<PersonName> matches = getAllMatchingNamePhonetics(givenNameSearch, middleNameSearch, familyNameSearch, familyName2Search);
+           for (PersonName pn:matches){
+               idList.add(pn.getPerson().getPersonId());
+           }
+           //TODO: figure out how you want to order them?
+   		PersonService personService = Context.getPersonService();
+   		List<Person> persons = new ArrayList<Person>();
+   		for (Integer personId : idList) {
+   			persons.add(personService.getPerson(personId));
+   		}
+   		return persons;
+       }
+     
 
 	@Override
 	public void savePhoneticsForAllPatients() {
