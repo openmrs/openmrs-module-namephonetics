@@ -63,6 +63,10 @@ public interface NamePhoneticsService extends OpenmrsService{
     @Transactional(readOnly=true)
     public List<Patient> findPatient(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search) throws APIException;
 
+    @Transactional(readOnly=true)
+    public List<Person> findPerson(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search) throws APIException;
+
+    
 	/**
 	 * Rebuilds all name phonetics in the database
 	 */
