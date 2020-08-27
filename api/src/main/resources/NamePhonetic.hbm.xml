@@ -8,7 +8,9 @@
 	<class name="NamePhonetic" table="name_phonetics">
 		
 		<id name="id"  column="name_phonetics_id" >
-			<generator class="native"/>
+			<generator class="native">
+				<param name="sequence">name_phonetics_name_phonetics_id_seq</param>
+			</generator>
 		</id>
 		<property name="renderedString" column="rendered_string" type="java.lang.String" length="255" not-null="true" />
 		<many-to-one name="personName" class="org.openmrs.PersonName" column="person_name_id" not-null="true" update="false"/>
