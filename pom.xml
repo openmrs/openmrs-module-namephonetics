@@ -10,11 +10,10 @@
 
 	<url>http://openmrs.org</url>
 
-	<scm>
-		<connection>scm:git:https://github.com/openmrs/openmrs-module-namephonetics/</connection>
-		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-namephonetics/</developerConnection>
-		<url>https://github.com/openmrs/openmrs-module-namephonetics/</url>
-	  <tag>HEAD</tag>
+    <scm>
+        <connection>scm:git:git@github.com:openmrs/openmrs-module-namephonetics.git</connection>
+        <developerConnection>scm:git:git@github.com:openmrs/openmrs-module-namephonetics.git</developerConnection>
+        <url>https://github.com/openmrs/openmrs-module-namephonetics.git</url>
     </scm>
 
 	<modules>
@@ -134,7 +133,7 @@
                         <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
                 </plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -215,12 +214,12 @@
     <distributionManagement>
         <repository>
             <id>openmrs-repo-modules</id>
-            <name>OpenMRS Modules</name>
+            <name>OpenMRS Nexus Modules</name>
             <url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules</url>
         </repository>
         <snapshotRepository>
             <id>openmrs-repo-snapshots</id>
-            <name>OpenMRS Snapshots</name>
+            <name>OpenMRS Nexus Snapshots</name>
             <url>http://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
