@@ -1,10 +1,17 @@
-/.settings
-/.project
-/.DS_Store
-/.idea
+*.class
 
-omod/.DS_Store
-target
-
+# Package Files #
+*.jar
+*.war
+*.ear
 *.iml
-/.classpath
+
+.classpath
+.idea
+.project
+.settings/*
+*/.classpath
+*/.project
+*/.settings/*
+*/target/*
+/.settings

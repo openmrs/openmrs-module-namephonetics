@@ -21,6 +21,7 @@
 		<module>api</module>
 		<module>api-1.x</module>
 		<module>api-2.x</module>
+        <module>api-tests</module>
 		<module>omod</module>
 	</modules>
 

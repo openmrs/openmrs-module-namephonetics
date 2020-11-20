@@ -18,7 +18,6 @@ import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
-import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -264,18 +263,13 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     
     @Override
 	public List<Patient> findPatient(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search){
-        Set<Integer> idList = new HashSet<Integer>();
-        Set<PersonName> matches = getAllMatchingNamePhonetics(givenNameSearch, middleNameSearch, familyNameSearch, familyName2Search);
-        for (PersonName pn:matches){
-            idList.add(pn.getPerson().getPersonId());
-        }
-        //TODO: figure out how you want to order them?
-		PatientService patientService = Context.getPatientService();
-		List<Patient> patients = new ArrayList<Patient>();
-		for (Integer patientId : idList) {
-			patients.add(patientService.getPatient(patientId));
-		}
-		return patients;
+	    List<Patient> ret = new ArrayList<Patient>();
+	    for (Person p : findPerson(givenNameSearch, middleNameSearch, familyNameSearch, familyName2Search)) {
+		    if (p instanceof Patient) {
+			    ret.add((Patient)p);
+		    }
+	    }
+	    return ret;
     }
     
     @Override
