@@ -14,7 +14,51 @@
     <context:component-scan base-package="org.openmrs.module.namephonetics" />
 
     <bean id="namephoneticsInterceptor" class="org.openmrs.module.namephonetics.advice.HibernateNamePhoneticsInterceptor" primary="true"/>
-     
+
+	<bean name="namePhoneticsService" class="org.openmrs.module.namephonetics.impl.NamePhoneticsServiceImpl">
+		<property name="dao">
+			<bean class="org.openmrs.module.namephonetics.db.hibernate.HibernateNamePhoneticsDAO">
+				<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+			</bean>
+		</property>
+		<property name="processors">
+			<map>
+				<entry>
+					<key><value>Soundex</value></key>
+					<value>org.apache.commons.codec.language.Soundex</value>
+				</entry>
+				<entry>
+					<key><value>Refined Soundex</value></key>
+					<value>org.apache.commons.codec.language.RefinedSoundex</value>
+				</entry>
+				<entry>
+					<key><value>Metaphone</value></key>
+					<value>org.apache.commons.codec.language.Metaphone</value>
+				</entry>
+				<entry>
+					<key><value>Double Metaphone</value></key>
+					<value>org.apache.commons.codec.language.DoubleMetaphone</value>
+				</entry>
+				<entry>
+					<key><value>Chichewa Soundex</value></key>
+					<value>org.openmrs.module.namephonetics.phoneticsalgorithm.ChichewaSoundex</value>
+				</entry>
+				<entry>
+					<key><value>Kinyarwanda Soundex</value></key>
+					<value>org.openmrs.module.namephonetics.phoneticsalgorithm.KinyarwandaSoundex</value>
+				</entry>
+				<entry>
+					<key><value>Caverphone</value></key>
+					<value>org.apache.commons.codec.language.Caverphone</value>
+				</entry>
+				<entry>
+					<key><value>Double Metaphone Alternate</value></key>
+					<value>org.openmrs.module.namephonetics.phoneticsalgorithm.DoubleMetaphoneAlternate</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
     <bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
@@ -22,49 +66,7 @@
 				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager"><ref bean="transactionManager"/></property>
 					<property name="target">
-						<bean name="namePhoneticsServiceImpl" class="org.openmrs.module.namephonetics.impl.NamePhoneticsServiceImpl">
-							<property name="dao">
-								<bean class="org.openmrs.module.namephonetics.db.hibernate.HibernateNamePhoneticsDAO">
-									<property name="sessionFactory"><ref bean="sessionFactory"/></property>	
-								</bean>
-							</property>	
-							<property name="processors">
-								<map>
-									<entry>
-								      <key><value>Soundex</value></key>
-								      <value>org.apache.commons.codec.language.Soundex</value>
-								    </entry>
-								    <entry>
-								      <key><value>Refined Soundex</value></key>
-								      <value>org.apache.commons.codec.language.RefinedSoundex</value>
-								    </entry>
-								    <entry>
-								      <key><value>Metaphone</value></key>
-								      <value>org.apache.commons.codec.language.Metaphone</value>
-								    </entry>
-								    <entry>
-								      <key><value>Double Metaphone</value></key>
-								      <value>org.apache.commons.codec.language.DoubleMetaphone</value>
-								    </entry>
-								    <entry>
-								      <key><value>Chichewa Soundex</value></key>
-								      <value>org.openmrs.module.namephonetics.phoneticsalgorithm.ChichewaSoundex</value>
-								    </entry>
-								    <entry>
-								      <key><value>Kinyarwanda Soundex</value></key>
-								      <value>org.openmrs.module.namephonetics.phoneticsalgorithm.KinyarwandaSoundex</value>
-								    </entry>
-								    <entry>
-								      <key><value>Caverphone</value></key>
-								      <value>org.apache.commons.codec.language.Caverphone</value>
-								    </entry>
-								     <entry>
-								      <key><value>Double Metaphone Alternate</value></key>
-								      <value>org.openmrs.module.namephonetics.phoneticsalgorithm.DoubleMetaphoneAlternate</value>
-								    </entry>
-								</map>
-							</property>
-						</bean>
+						<ref bean="namePhoneticsService" />
 					</property>
 					<property name="preInterceptors">
 						<list>
