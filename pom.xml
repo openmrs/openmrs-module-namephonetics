@@ -11,17 +11,17 @@
 
 	<url>http://openmrs.org</url>
 
+    <properties>
+        <openMRSVersion>2.4.0</openMRSVersion>
+        <legacyuiVersion>1.10.0</legacyuiVersion>
+    </properties>
+
     <scm>
         <connection>scm:git:git@github.com:openmrs/openmrs-module-namephonetics.git</connection>
         <developerConnection>scm:git:git@github.com:openmrs/openmrs-module-namephonetics.git</developerConnection>
         <url>https://github.com/openmrs/openmrs-module-namephonetics.git</url>
         <tag>HEAD</tag>
     </scm>
-
-    <properties>
-        <openMRSVersion>2.4.0</openMRSVersion>
-        <legacyuiVersion>1.10.0</legacyuiVersion>
-    </properties>
 
 	<modules>
 		<module>api</module>
@@ -49,7 +49,7 @@
             <groupId>org.openmrs.test</groupId>
             <artifactId>openmrs-test</artifactId>
             <version>${openMRSVersion}</version>
-            <classifier>tests</classifier>
+			<type>pom</type>
             <scope>test</scope>
         </dependency>
 
@@ -74,23 +74,16 @@
 				</plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <configuration>
-                        <includeEmptyDirs>true</includeEmptyDirs>
-                    </configuration>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.4</version>
                 </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
+                    <artifactId>maven-release-plugin</artifactId>
                     <version>2.5</version>
                     <configuration>
-                        <!-- Some tests are locale specific -->
-                        <argLine>-Duser.language=en -Duser.region=US</argLine>
-                        <!-- Bamboo agents require a different tmp folder -->
-                        <systemPropertyVariables>
-                            <java.io.tmpdir>${java.io.tmpdir}</java.io.tmpdir>
-                        </systemPropertyVariables>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
                 </plugin>
 				<plugin>
@@ -116,61 +109,11 @@
 						<argLine>-Duser.language=en -Duser.region=US -Xmx512m</argLine>
                     </configuration>
                 </plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.1,)
-										</versionRange>
-										<goals>
-											<goal>
-												unpack-dependencies
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.openmrs.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-openmrs-plugin
-										</artifactId>
-										<versionRange>
-											[1.0.1,)
-										</versionRange>
-										<goals>
-											<goal>
-												initialize-module
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9.1</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -197,12 +140,12 @@
     <distributionManagement>
         <repository>
             <id>openmrs-repo-modules</id>
-            <name>OpenMRS Nexus Modules</name>
+			<name>OpenMRS Modules</name>
             <url>https://mavenrepo.openmrs.org/modules</url>
         </repository>
         <snapshotRepository>
             <id>openmrs-repo-snapshots</id>
-            <name>OpenMRS Nexus Snapshots</name>
+			<name>OpenMRS Snapshots</name>
             <url>https://mavenrepo.openmrs.org/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
