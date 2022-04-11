@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>namephonetics</artifactId>
-	<version>1.19.0-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Name Phonetics</name>
 	<description>Parent project for Name Phonetics</description>
@@ -15,69 +15,45 @@
         <connection>scm:git:git@github.com:openmrs/openmrs-module-namephonetics.git</connection>
         <developerConnection>scm:git:git@github.com:openmrs/openmrs-module-namephonetics.git</developerConnection>
         <url>https://github.com/openmrs/openmrs-module-namephonetics.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <openMRSVersion>2.4.0</openMRSVersion>
+        <legacyuiVersion>1.10.0</legacyuiVersion>
+    </properties>
 
 	<modules>
 		<module>api</module>
-		<module>api-1.x</module>
-		<module>api-2.x</module>
-        <module>api-tests</module>
 		<module>omod</module>
 	</modules>
 
-	<dependencyManagement>
-		<dependencies>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.openmrs.api</groupId>
-                <artifactId>openmrs-api</artifactId>
-                <version>${openMRSVersion}</version>
-                <type>jar</type>
-                <scope>provided</scope>
-            </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.openmrs.api</groupId>
+            <artifactId>openmrs-api</artifactId>
+            <version>${openMRSVersion}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
 
-            <dependency>
-                <groupId>org.openmrs.api</groupId>
-                <artifactId>openmrs-api</artifactId>
-                <version>${openMRSVersion}</version>
-                <type>test-jar</type>
-                <scope>test</scope>
-            </dependency>
+        <dependency>
+            <groupId>org.openmrs.api</groupId>
+            <artifactId>openmrs-api</artifactId>
+            <version>${openMRSVersion}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
 
-            <dependency>
-                <groupId>org.openmrs.web</groupId>
-                <artifactId>openmrs-web</artifactId>
-                <version>${openMRSVersion}</version>
-                <type>jar</type>
-                <scope>provided</scope>
-            </dependency>
+        <dependency>
+            <groupId>org.openmrs.test</groupId>
+            <artifactId>openmrs-test</artifactId>
+            <version>${openMRSVersion}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
 
-            <dependency>
-                <groupId>org.openmrs.web</groupId>
-                <artifactId>openmrs-web</artifactId>
-                <version>${openMRSVersion}</version>
-                <type>test-jar</type>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.openmrs.test</groupId>
-                <artifactId>openmrs-test</artifactId>
-                <version>${openMRSVersion}</version>
-                <type>pom</type>
-                <scope>test</scope>
-            </dependency>
-		</dependencies>
-	</dependencyManagement>
-
-	<properties>
-		<openMRSVersion>1.9.9</openMRSVersion>
-	</properties>
+    </dependencies>
 
     <build>
 		<pluginManagement>
@@ -86,8 +62,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <target>1.6</target>
-                        <source>1.6</source>
+                        <target>8</target>
+                        <source>8</source>
+                        <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
 				<plugin>
@@ -129,11 +106,14 @@
 				</plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5</version>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M5</version>
                     <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <tagNameFormat>@{project.version}</tagNameFormat>
+						<includes>
+							<include>**/*Test.java</include>
+						</includes>
+						<runOrder>alphabetical</runOrder> <!-- TODO: hack because we want the ViewRecordController Test to run last since it dirties context (?); figure out the right way and remove this  -->
+						<argLine>-Duser.language=en -Duser.region=US -Xmx512m</argLine>
                     </configuration>
                 </plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings

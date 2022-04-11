@@ -81,10 +81,4 @@
 		</property>
 	</bean>
 
-
-
-	<!-- <bean class="org.openmrs.module.namephonetics.NamePhoneticsContextAware" />  -->
-	 
-	
-    
 </beans>

@@ -14,5 +14,4 @@
     <!-- for the controller -->
     <context:component-scan base-package="org.openmrs.module.namephonetics" />
 
-
 </beans>
