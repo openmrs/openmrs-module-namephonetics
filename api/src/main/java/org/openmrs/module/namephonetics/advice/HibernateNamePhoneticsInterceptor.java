@@ -1,8 +1,5 @@
 package org.openmrs.module.namephonetics.advice;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.EmptyInterceptor;
@@ -13,6 +10,9 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.namephonetics.NamePhoneticsConstants;
 import org.openmrs.module.namephonetics.NamePhoneticsService;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 
 public class HibernateNamePhoneticsInterceptor extends EmptyInterceptor  {
@@ -92,8 +92,7 @@ public class HibernateNamePhoneticsInterceptor extends EmptyInterceptor  {
      */
     
     /**
-     * Updates the name phonetics for each person in the personNames set 
-     * @param entity
+     * Updates the name phonetics for each person in the personNames set
      */
     private void personUpdateHelper(){
     		checkGPs();
