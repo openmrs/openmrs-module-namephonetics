@@ -265,9 +265,12 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
 	public List<Patient> findPatient(String givenNameSearch, String middleNameSearch, String familyNameSearch, String familyName2Search){
 	    List<Patient> ret = new ArrayList<Patient>();
 	    for (Person p : findPerson(givenNameSearch, middleNameSearch, familyNameSearch, familyName2Search)) {
-		    if (p.getIsPatient()) {
-			    ret.add(Context.getPatientService().getPatient(p.getPersonId()));
+		     if (p instanceof Patient) {
+			    ret.add((Patient)p);
 		    }
+            	    else if (p.getIsPatient()) {
+                            ret.add(Context.getPatientService().getPatient(p.getPersonId()));
+            	    }
 	    }
 	    return ret;
     }
