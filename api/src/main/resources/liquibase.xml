@@ -79,7 +79,7 @@
     <changeSet author="aman (generated)" id="name_phonetics-1598359669281-1041">
         <preConditions onFail="MARK_RAN">
             <not>
-                <foreignKeyConstraintExists foreignKeyName="person_name_for_name_phonetics" />
+                <foreignKeyConstraintExists foreignKeyTableName="name_phonetics" foreignKeyName="person_name_for_name_phonetics" />
             </not>
         </preConditions>
         <addForeignKeyConstraint baseColumnNames="person_name_id" baseTableName="name_phonetics" constraintName="person_name_for_name_phonetics" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="person_name_id" referencedTableName="person_name"/>
