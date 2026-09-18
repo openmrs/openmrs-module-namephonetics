@@ -331,6 +331,15 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
     @Override
 	public void savePhoneticsForPersonName(PersonName pn, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2){
     	deleteNamePhonetics(pn);
+        saveNamePhoneticsForPersonNameFields(pn, gpGivenName, gpMiddleName, gpFamilyName, gpFamilyName2);
+    }
+
+    @Override
+	public void savePhoneticsForNewPersonName(PersonName pn, String gpGivenName, String gpMiddleName, String gpFamilyName, String gpFamilyName2){
+        saveNamePhoneticsForPersonNameFields(pn, gpGivenName, gpMiddleName, gpFamilyName, gpFamilyName2);
+    }
+
+    private void saveNamePhoneticsForPersonNameFields(PersonName pn, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2){
         if (StringUtils.isNotBlank(gpGivenName) && StringUtils.isNotBlank(pn.getGivenName())) {
             saveNamePhonetic(new NamePhonetic(NamePhoneticsUtil.encodeString(pn.getGivenName(), gpGivenName), pn, NamePhonetic.NameField.GIVEN_NAME, getProcessorClassName(gpGivenName)));
         }
@@ -343,7 +352,7 @@ public class NamePhoneticsServiceImpl extends BaseOpenmrsService implements Name
         if (StringUtils.isNotBlank(gpFamilyName2) && StringUtils.isNotBlank(pn.getFamilyName2())) {
             saveNamePhonetic(new NamePhonetic(NamePhoneticsUtil.encodeString(pn.getFamilyName2(), gpFamilyName2), pn, NamePhonetic.NameField.FAMILY_NAME2, getProcessorClassName(gpFamilyName2)));
         }
-        
+
     }
   
     @Override

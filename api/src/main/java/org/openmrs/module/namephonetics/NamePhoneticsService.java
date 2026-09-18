@@ -99,7 +99,17 @@ public interface NamePhoneticsService extends OpenmrsService{
 
     @Transactional
     public void savePhoneticsForPersonName(PersonName pn, String gpGivenName,  String gpMiddleName, String gpFamilyName, String gpFamilyName2) throws APIException;
-    
+
+    /**
+     * Saves phonetics for a PersonName that is known to have just been created (e.g., via the
+     * HibernateNamePhoneticsInterceptor's onSave callback) and therefore cannot already have any
+     * NamePhonetic rows in the database. Unlike {@link #savePhoneticsForPersonName}, this does not
+     * first delete any existing phonetics for the PersonName, avoiding an unnecessary DELETE
+     * statement (and its associated locking) on the common "new patient" path.
+     */
+    @Transactional
+    public void savePhoneticsForNewPersonName(PersonName pn, String gpGivenName, String gpMiddleName, String gpFamilyName, String gpFamilyName2) throws APIException;
+
     @Transactional
     public void deleteNamePhonetics(PersonName pn) throws APIException;
 
