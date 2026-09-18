@@ -85,13 +85,6 @@ public class NamePhoneticsServiceTest extends BaseModuleContextSensitiveTest {
 		}
 	}
 
-	// NOTE: the interceptor's automatic save-on-transaction-commit behavior (see
-	// HibernateNamePhoneticsInterceptor.afterTransactionBegin()/HibernateNamePhoneticsInterceptorTest)
-	// is only triggered by a real transaction commit, which BaseModuleContextSensitiveTest
-	// deliberately never does mid-test (each test is wrapped in a transaction that is rolled back
-	// at the end, and Context.flushSession() alone does not trigger it). That behavior is instead
-	// covered directly by HibernateNamePhoneticsInterceptorTest.
-
 	protected void updateGlobalProperty(String propertyName, String propertyValue) {
 		GlobalProperty gp = administrationService.getGlobalPropertyObject(propertyName);
 		if (gp == null) {

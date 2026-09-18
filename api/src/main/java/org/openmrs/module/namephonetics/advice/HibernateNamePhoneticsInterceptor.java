@@ -142,7 +142,7 @@ public class HibernateNamePhoneticsInterceptor extends EmptyInterceptor  {
      */
     private void queuePersonName(PersonName name, boolean isNew) {
     	if (queuedPersonNames.get() == null) {
-			queuedPersonNames.set(new LinkedHashMap<PersonName, Boolean>());
+			queuedPersonNames.set(new LinkedHashMap<>());
 		}
     	Map<PersonName, Boolean> queued = queuedPersonNames.get();
     	if (isNew || !queued.containsKey(name)) {
